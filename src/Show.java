@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 
 public class Show {
-    private final String title; // логично сделать поля final тк у созданного Show данные поля меняются крайне редко, а если меняются то вероятно это уже новое шоу
-    private final int duration;
-    private final Director director;
+    private String title;
+    private int duration;
+    private Director director;
     private final ArrayList<Actor> listOfActors = new ArrayList<>();
 
     public Show(String title, int duration, Director director) {
@@ -29,15 +29,25 @@ public class Show {
         listOfActors.add(newActor);
     }
 
-    public void replaceActor(Actor newActor, String surname){
+    public void replaceActor(Actor newActor, String surname) {
+        int foundIndex = -1;
+        int count = 0;
+
         for (int i = 0; i < listOfActors.size(); i++) {
             Actor actor = listOfActors.get(i);
             if (actor.getSurname().equals(surname)) {
-                listOfActors.set(i, newActor);
-                return;
+                foundIndex = i;
+                count++;
             }
         }
-        System.out.println("Актер с указанной фамилией не найден, замена невозможна.");
+
+        if (count == 0) {
+            System.out.println("Актер с указанной фамилией не найден, замена невозможна.");
+        } else if (count > 1) {
+            System.out.println("В спектакле несколько актеров с такой фамилией, замена невозможна.");
+        } else {
+            listOfActors.set(foundIndex, newActor);
+        }
     }
 
     public String getTitle() {
